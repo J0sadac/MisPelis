@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import {GuardarEnLocalStorage} from './herramientas/GuardarEnLocalStorage';
 
-const Crear = () => {
+const Crear = ({setListadoState}) => {
 
     var tituloComponente ='Añadir Pelicula';
 
@@ -10,7 +10,6 @@ const Crear = () => {
         descripcion: ''
     });
 
-    const {titulo, descripcion} = pelicula;
 
     const conseguirDatos = (event) => {
         event.preventDefault();
@@ -29,16 +28,20 @@ const Crear = () => {
         //con esto guardamos el estado
         setPelicula(peli);
 
+        //actualizar la pantalla
+        setListadoState(elementos => {
+            return[...elementos, peli]
+        })
+
         //con esto lo guardamos en el almacenamiento local
-        GuardarEnLocalStorage('Peliculas', peli)
+        GuardarEnLocalStorage('Peliculas', peli);
+  
     };
 
     return(
         <Fragment>
             <div className="add">
                 <h3 className="title">{tituloComponente}</h3>
-
-                {(titulo && descripcion) && <p>{titulo} {descripcion}</p>}
                 
                 <form onSubmit={conseguirDatos}>
                     <input type="text"
